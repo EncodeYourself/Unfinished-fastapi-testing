@@ -42,7 +42,7 @@ def delete_post(idx, db: Session = Depends(get_db), user_id: int = Depends(get_c
     post_data = post.first()
     
     if post_data is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = 'the post with such an id was not found, lol!')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = 'the post with such an id was not found!')
     
     if post_data.user_id !=  int(user_id.id):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='That is not yours to delete!')
@@ -54,7 +54,7 @@ def delete_post(idx, db: Session = Depends(get_db), user_id: int = Depends(get_c
 def update(idx: int, post: post_template, db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
     up_post = db.query(models.Post).filter(models.Post.id == idx)
     if up_post.first() is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = 'the post with such an id was not found, lol!')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail = 'the post with such an id was not found!')
     
     up_post.update(post.dict(), synchronize_session=False)
     db.commit()
